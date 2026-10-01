@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { EVENT_CONFIG } from '../config/event';
 import { triggerPowerConfetti } from '../utils/confetti';
 import { LightningIcon, SparkleIcon, CalendarIcon, ClockIcon } from './Icons';
 import { PoolFloatie, PopStar } from './Decorations';
+import { PhotoDecorations } from './PhotoDecorations';
 
 interface HeroProps {
   motionPaused?: boolean;
@@ -12,6 +13,24 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ motionPaused = false }) => {
   const shouldReduceMotion = useReducedMotion() || motionPaused;
   const [boltActive, setBoltActive] = useState(false);
+  const [isInView, setIsInView] = useState(true);
+  const photoCardRef = useRef<HTMLDivElement>(null);
+
+  // IntersectionObserver para detener animaciones si la foto sale de pantalla y ahorrar recursos
+  useEffect(() => {
+    const el = photoCardRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const handleActivatePower = () => {
     setBoltActive(true);
@@ -59,16 +78,19 @@ export const Hero: React.FC<HeroProps> = ({ motionPaused = false }) => {
         <PopStar size={34} color="var(--color-yellow)" />
       </div>
 
-      {/* Encabezado del Hero */}
+      {/* Encabezado del Hero en columna centrada compartiendo el mismo eje */}
       <div
         style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           textAlign: 'center',
           marginBottom: '20px',
           position: 'relative',
           zIndex: 2,
         }}
       >
-        {/* Badge superior temático */}
+        {/* 1. POOL PARTY */}
         <div
           style={{
             display: 'inline-flex',
@@ -84,28 +106,28 @@ export const Hero: React.FC<HeroProps> = ({ motionPaused = false }) => {
             fontSize: '0.9rem',
             letterSpacing: '1px',
             textTransform: 'uppercase',
-            marginBottom: '12px',
+            marginBottom: '10px',
           }}
         >
           <span>🌊 Pool Party ⚡️</span>
         </div>
 
-        {/* Nombre Principal: Igna⚡️ */}
+        {/* 2. Igna ⚡️ (Relleno rosa pastel #F6B8D7 con contorno oscuro y rayo integrado) */}
         <h1
           style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(2.8rem, 9vw, 4.4rem)',
             fontWeight: 700,
             lineHeight: 1.05,
-            color: 'var(--color-aqua)',
+            color: '#F6B8D7',
             WebkitTextStroke: '2px var(--color-text-dark)',
             textShadow: '3px 3px 0px var(--color-text-dark)',
             letterSpacing: '-0.5px',
-            margin: '0 0 8px 0',
-            display: 'flex',
+            margin: '0 0 10px 0',
+            display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '6px',
+            gap: '8px',
           }}
         >
           <span>Igna</span>
@@ -122,53 +144,29 @@ export const Hero: React.FC<HeroProps> = ({ motionPaused = false }) => {
           </motion.span>
         </h1>
 
-        {/* Destacado del «10» y apodo «Igna Power» */}
+        {/* 3. ¡MIS 10 AÑOS! (Compartiendo el mismo eje central) */}
         <div
           style={{
-            display: 'flex',
-            flexWrap: 'wrap',
+            display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '10px',
-            marginBottom: '14px',
+            gap: '6px',
+            background: 'var(--color-yellow)',
+            color: 'var(--color-text-dark)',
+            padding: '6px 20px',
+            borderRadius: 'var(--radius-md)',
+            border: '2px solid var(--color-text-dark)',
+            boxShadow: 'var(--shadow-pop-sm)',
+            fontWeight: 800,
+            fontSize: '1.05rem',
+            marginBottom: '12px',
           }}
         >
-          <div
-            style={{
-              background: 'var(--color-yellow)',
-              color: 'var(--color-text-dark)',
-              padding: '6px 16px',
-              borderRadius: 'var(--radius-md)',
-              border: '2px solid var(--color-text-dark)',
-              boxShadow: 'var(--shadow-pop-sm)',
-              fontWeight: 800,
-              fontSize: '1.05rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
-          >
-            <span>¡MIS 10 AÑOS!</span>
-            <span aria-hidden="true">🎈</span>
-          </div>
-
-          <div
-            style={{
-              background: 'var(--color-aqua-light)',
-              color: 'var(--color-text-dark)',
-              padding: '6px 14px',
-              borderRadius: 'var(--radius-md)',
-              border: '2px solid var(--color-text-dark)',
-              boxShadow: 'var(--shadow-pop-sm)',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-            }}
-          >
-            {EVENT_CONFIG.nickname} ⚡️
-          </div>
+          <span>¡MIS 10 AÑOS!</span>
+          <span aria-hidden="true">🎈</span>
         </div>
 
-        {/* Frase oficial de invitación */}
+        {/* 4. Las invito a celebrar mis 10 años 🥳🎈 */}
         <p
           style={{
             fontSize: 'clamp(1.1rem, 3.8vw, 1.35rem)',
@@ -183,19 +181,12 @@ export const Hero: React.FC<HeroProps> = ({ motionPaused = false }) => {
         </p>
       </div>
 
-      {/* Tarjeta de Fotografía Principal */}
+      {/* Tarjeta de Fotografía Principal con escena animada de cumpleaños y pool party */}
       <div
-        style={{
-          position: 'relative',
-          borderRadius: 'var(--radius-lg)',
-          border: '3.5px solid var(--color-text-dark)',
-          boxShadow: 'var(--shadow-pop-lg)',
-          overflow: 'hidden',
-          backgroundColor: '#A8E3F5',
-          margin: '0 auto 24px auto',
-        }}
+        ref={photoCardRef}
+        className={`photo-card-frame ${!isInView ? 'is-offscreen' : ''}`}
       >
-        {/* Foto de Igna usando <picture> con WebP y fallback JPG con dimensiones explícitas */}
+        {/* Foto de Igna usando <picture> con WebP y fallback JPG con proporciones y calidad intactas */}
         <picture>
           <source type="image/webp" srcSet={EVENT_CONFIG.photoPath.webp} />
           <img
@@ -206,73 +197,12 @@ export const Hero: React.FC<HeroProps> = ({ motionPaused = false }) => {
             loading="eager"
             fetchPriority="high"
             decoding="async"
-            style={{
-              width: '100%',
-              height: 'auto',
-              maxHeight: '620px',
-              objectFit: 'cover',
-              objectPosition: 'center 35%', // Mantiene el cielo arriba, rostro visible y laguna con protagonismo
-              display: 'block',
-            }}
+            className="photo-stable"
           />
         </picture>
 
-        {/* Sticker integrado en el cielo (sin tapar cara ni cabeza) */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '14px',
-            right: '14px',
-            background: 'rgba(255, 255, 255, 0.92)',
-            backdropFilter: 'blur(6px)',
-            color: 'var(--color-text-dark)',
-            padding: '6px 14px',
-            borderRadius: 'var(--radius-full)',
-            border: '2px solid var(--color-text-dark)',
-            boxShadow: 'var(--shadow-pop-sm)',
-            fontWeight: 800,
-            fontSize: '0.85rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-          }}
-        >
-          <span>⚡️ Agua & Energía 🌊</span>
-        </div>
-
-        {/* Franja decorativa inferior que enmarca la foto */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            background: 'linear-gradient(to top, rgba(18, 48, 71, 0.75) 0%, rgba(18, 48, 71, 0) 100%)',
-            padding: '24px 16px 12px 16px',
-            color: 'var(--color-white)',
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '0.9rem' }}>
-            <span style={{ color: 'var(--color-yellow)' }}>📍</span>
-            <span>{EVENT_CONFIG.venue}</span>
-          </div>
-          <div
-            style={{
-              background: 'var(--color-lime)',
-              color: 'var(--color-text-dark)',
-              padding: '3px 10px',
-              borderRadius: 'var(--radius-sm)',
-              fontWeight: 800,
-              fontSize: '0.78rem',
-              border: '1.5px solid var(--color-text-dark)',
-            }}
-          >
-            10 AÑOS
-          </div>
-        </div>
+        {/* Ilustraciones decorativas animadas automáticamente: globos, flotador, pelota y confeti */}
+        <PhotoDecorations />
       </div>
 
       {/* Botón Principal: Activar Power ⚡️ */}

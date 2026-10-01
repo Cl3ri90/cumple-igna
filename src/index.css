@@ -149,24 +149,138 @@ img {
   animation: pulseGlow 3s ease-in-out infinite;
 }
 
-/* Respect Motion Pausing (via State Toggle) */
-.motion-paused,
-.motion-paused *,
-.motion-paused *::before,
-.motion-paused *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-  scroll-behavior: auto !important;
+/* ==========================================================================
+   Photo Frame & Party Decorations Animations (Balloons, Pool Ring, Ball, Confetti)
+   Cycles: 4.8s - 7.2s, visible automatically, displacements 8-16px, subtle tilts
+   ========================================================================== */
+
+.photo-card-frame {
+  position: relative;
+  border-radius: var(--radius-lg);
+  border: 3.5px solid var(--color-text-dark);
+  box-shadow: var(--shadow-pop-lg);
+  overflow: hidden;
+  background-color: #A8E3F5;
+  margin: 0 auto 24px auto;
 }
 
-.motion-paused .float-ambient,
-.motion-paused .float-ambient-alt,
-.motion-paused .pulse-ambient {
-  animation: none !important;
+.photo-stable {
+  width: 100%;
+  height: auto;
+  max-height: 620px;
+  object-fit: cover;
+  object-position: center 35%;
+  display: block;
 }
 
-/* Respect OS prefers-reduced-motion */
+@keyframes floatBalloonPink {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(-4deg);
+  }
+  100% {
+    transform: translateY(-3px) rotate(3deg);
+  }
+}
+
+@keyframes floatBalloonLilac {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(-4px) rotate(-3deg);
+  }
+}
+
+@keyframes bobPoolRing {
+  0% {
+    transform: translateY(0px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-11px) rotate(4deg);
+  }
+  100% {
+    transform: translateY(2px) rotate(-3deg);
+  }
+}
+
+@keyframes wobbleBeachBall {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(10deg);
+  }
+  100% {
+    transform: translateY(1px) rotate(-6deg);
+  }
+}
+
+@keyframes driftConfettiItem1 {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-10px) rotate(14deg);
+  }
+}
+
+@keyframes driftConfettiItem2 {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(10px) rotate(-16deg);
+  }
+}
+
+.anim-balloon-pink {
+  animation: floatBalloonPink 5.4s ease-in-out infinite alternate;
+  will-change: transform;
+  transform-origin: center bottom;
+}
+
+.anim-balloon-lilac {
+  animation: floatBalloonLilac 6.8s ease-in-out infinite alternate 0.7s;
+  will-change: transform;
+  transform-origin: center bottom;
+}
+
+.anim-pool-ring {
+  animation: bobPoolRing 4.8s ease-in-out infinite alternate;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.anim-beach-ball {
+  animation: wobbleBeachBall 6.2s ease-in-out infinite alternate 0.4s;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.anim-confetti-item-1,
+.anim-confetti-item-3 {
+  animation: driftConfettiItem1 5.8s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.anim-confetti-item-2,
+.anim-confetti-item-4 {
+  animation: driftConfettiItem2 7.2s ease-in-out infinite alternate 0.9s;
+  will-change: transform;
+}
+
+/* Off-screen pause optimization to save CPU/GPU resources */
+.photo-card-frame.is-offscreen * {
+  animation-play-state: paused !important;
+}
+
+/* Respect OS prefers-reduced-motion (static display) */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -176,10 +290,19 @@ img {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .anim-balloon-pink,
+  .anim-balloon-lilac,
+  .anim-pool-ring,
+  .anim-beach-ball,
+  .anim-confetti-item-1,
+  .anim-confetti-item-2,
+  .anim-confetti-item-3,
+  .anim-confetti-item-4,
   .float-ambient,
   .float-ambient-alt,
   .pulse-ambient {
     animation: none !important;
+    transform: none !important;
   }
 }
 

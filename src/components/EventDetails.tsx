@@ -261,7 +261,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ onOpenMap }) => {
             boxShadow: 'var(--shadow-pop)',
             padding: '16px',
             display: 'flex',
-            alignItems: 'flex-start',
+            alignItems: 'center',
             gap: '14px',
           }}
         >
@@ -286,9 +286,6 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ onOpenMap }) => {
             </div>
             <div style={{ fontWeight: 800, fontSize: '1.15rem', color: 'var(--color-text-dark)' }}>
               {EVENT_CONFIG.dressCode}
-            </div>
-            <div style={{ fontSize: '0.85rem', color: '#4A6572', fontWeight: 500, marginTop: '2px' }}>
-              Traer toalla, bloqueador y chalas 🩱
             </div>
           </div>
         </div>

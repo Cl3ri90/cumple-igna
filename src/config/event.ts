@@ -41,5 +41,5 @@ export const EVENT_CONFIG: EventConfig = {
   // NOTA: Pendiente enlace verificado exacto. Si está vacío, se ofrece "Buscar lugar" con búsqueda directa en Google Maps.
   mapsUrl: '',
   // NOTA: Pendiente dominio de producción final.
-  siteUrl: 'https://cumple-igna.vercel.app',
+  siteUrl: 'https://cumple-igna.netlify.app',
 };
