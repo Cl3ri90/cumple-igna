@@ -1,0 +1,197 @@
+/* ==========================================================================
+   IGNA POWER — POOL PARTY ⚡️🌊
+   Design System & Global Styles
+   ========================================================================== */
+
+:root {
+  /* Fluor & Aqua Palette */
+  --color-aqua: #00D9F5;
+  --color-pink: #FF3BBE;
+  --color-lime: #C7FF00;
+  --color-purple: #8B3DFF;
+  --color-yellow: #FFE600;
+  --color-bg-light: #F3FDFF;
+  --color-text-dark: #123047;
+
+  /* Extended Shades & Supporting Tints */
+  --color-aqua-deep: #0099b8;
+  --color-aqua-light: #E0F9FD;
+  --color-pink-soft: #FFF0F8;
+  --color-dark-surface: #0E2439;
+  --color-white: #FFFFFF;
+
+  /* Typography */
+  --font-display: 'Fredoka', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Pop Shadows & Borders */
+  --shadow-pop-sm: 2px 2px 0px var(--color-text-dark);
+  --shadow-pop: 4px 4px 0px var(--color-text-dark);
+  --shadow-pop-lg: 6px 6px 0px var(--color-text-dark);
+  --shadow-glow-aqua: 0 0 20px rgba(0, 217, 245, 0.45);
+  --shadow-glow-pink: 0 0 20px rgba(255, 59, 190, 0.45);
+  --shadow-glow-yellow: 0 0 20px rgba(255, 230, 0, 0.55);
+
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --trans-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --trans-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-body);
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(0, 217, 245, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 90% 60%, rgba(255, 59, 190, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(199, 255, 0, 0.1) 0%, transparent 40%),
+    var(--color-bg-light);
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 3px solid var(--color-pink);
+  outline-offset: 3px;
+}
+
+/* Clean Button Resets */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==========================================================================
+   Keyframes & Ambient Motion
+   ========================================================================== */
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+@keyframes floatOpposite {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(7px) rotate(-2deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(0, 217, 245, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(255, 59, 190, 0.65));
+  }
+}
+
+@keyframes waveFlow {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Ambient Floating Classes */
+.float-ambient {
+  animation: floatGentle 4.5s ease-in-out infinite;
+}
+
+.float-ambient-alt {
+  animation: floatOpposite 5.2s ease-in-out infinite;
+}
+
+.pulse-ambient {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* Respect Motion Pausing (via State Toggle) */
+.motion-paused,
+.motion-paused *,
+.motion-paused *::before,
+.motion-paused *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+.motion-paused .float-ambient,
+.motion-paused .float-ambient-alt,
+.motion-paused .pulse-ambient {
+  animation: none !important;
+}
+
+/* Respect OS prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .float-ambient,
+  .float-ambient-alt,
+  .pulse-ambient {
+    animation: none !important;
+  }
+}
+
+/* Utilities */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
